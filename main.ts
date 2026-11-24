@@ -8,6 +8,13 @@ const ENTRY =
 
 const outDir = process.env.OUTPUT_DIR ?? "/output";
 
+// Fail fast on an invalid entry: the gate requires 1-200 non-blank characters.
+if (ENTRY.trim().length === 0 || ENTRY.length > 200) {
+  throw new Error(
+    `entry must be 1-200 characters, got ${ENTRY.length}`,
+  );
+}
+
 // /output is a mounted directory: empty its contents, never remove the dir itself.
 mkdirSync(outDir, { recursive: true });
 for (const name of readdirSync(outDir)) {
